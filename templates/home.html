@@ -4,8 +4,6 @@
 </head>
 <body>
     <div class="login">
-       
-   
        <form action="{{ url_for('predict_datapoint')}}" method="post">
         <h1>
             <legend>Student Exam Performance Prediction</legend>
@@ -113,14 +111,13 @@
     <div class="col s12 m6">
       <div class="card blue-grey darken-1">
         <div class="card-content white-text">
-          <span class="card-title">Result</span>
+          <span class="result">Result</span>
 			  <h2>
 			   The prediction for Maths score is {{results}}
 			</h2>
         </div>
       </div>
     </div>
-  </div>
-    
-   <body>
+   </div> 
+</body>
 </html>
