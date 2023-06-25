@@ -1,13 +1,17 @@
 <html>
+<head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
 <body>
     <div class="login">
-       <h1>Student Exam Performance Indicator</h1>
+       
    
        <form action="{{ url_for('predict_datapoint')}}" method="post">
         <h1>
             <legend>Student Exam Performance Prediction</legend>
         </h1>
         <div class="mb-3">
+		<div class="input-field col s12">
             <label class="form-label">Gender</label>
             <select class="form-control" name="gender" placeholder="Enter you Gender" required>
                 <option class="placeholder" selected disabled value="">Select your Gender</option>
@@ -19,6 +23,7 @@
                 </option>
             </select>
         </div>
+		</div>
         <div class="mb-3">
             <label class="form-label">Race or Ethnicity</label>
             <select class="form-control" name="race_ethnicity" placeholder="Enter you ethnicity" required>
@@ -104,8 +109,18 @@
             <input class="btn btn-primary" type="submit" value="Predict your Maths Score" required />
         </div>
     </form>
-    <h2>
-       THE  prediction is {{results}}
-    </h2>
+	<div class="row">
+    <div class="col s12 m6">
+      <div class="card blue-grey darken-1">
+        <div class="card-content white-text">
+          <span class="card-title">Result</span>
+			  <h2>
+			   The prediction for Maths core is {{results}}
+			</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+    
    <body>
 </html>
