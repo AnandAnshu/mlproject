@@ -1,7 +1,7 @@
 import os
 import sys
 from dataclasses import dataclass
-
+import numpy as np
 from catboost import CatBoostRegressor
 from sklearn.ensemble import (
     AdaBoostRegressor,
@@ -49,12 +49,53 @@ class ModelTrainer:
                 "Cat Boost": CatBoostRegressor(),
                 "Ada Boost": AdaBoostRegressor()
             }
+            params={
+                "Decision Tree": {
+                    'criterion':['squared_error', 'friedman_mse', 'absolute_error', 'poisson'],
+                    # 'splitter':['best','random'],
+                    # 'max_features':['sqrt','log2'],
+                },
+                "Random Forest":{
+                    # 'criterion':['squared_error', 'friedman_mse', 'absolute_error', 'poisson'],
+                 
+                    # 'max_features':['sqrt','log2',None],
+                    'n_estimators': [8,16,32,64,128,256]
+                },
+                "Linear Regression":{},
+                "Lasso": {
+                    'alpha': np.linspace(0, 0.2, 21)
+                },
+                "Ridge": {
+                    'alpha': np.arange(0, 1, 0.01)
+                },
+                "K Neighbors": {
+                    'n_neighbors': np.arange(1, 21, 2),
+                    'weights': ['uniform', 'distance'],
+                    'metric': ['euclidean', 'manhattan', 'minkowski']
+                },
+                "XG Boost":{
+                    'learning_rate':[.1,.01,.05,.001],
+                    'n_estimators': [8,16,32,64,128,256]
+                },
+                "Cat Boost":{
+                    'depth': [6,8,10],
+                    'learning_rate': [0.01, 0.05, 0.1],
+                    'iterations': [30, 50, 100]
+                },
+                "Ada Boost":{
+                    'learning_rate':[.1,.01,0.5,.001],
+                    # 'loss':['linear','square','exponential'],
+                    'n_estimators': [8,16,32,64,128,256]
+                }
+                
+            }
             model_report: dict=evaluate_models(
                 X_train=X_train, 
                 y_train=Y_train, 
                 X_test=X_test, 
                 y_test=Y_test, 
-                models=models
+                models=models,
+                param=params
             )
             logging.info(model_report)
             #to get best model score from report dict
@@ -69,7 +110,7 @@ class ModelTrainer:
             if best_model_score<0.6:
                 raise CustomException("No best model found")    
 
-            logging.info("Best model found")
+            logging.info("Best model found: {}".format(best_model_name))
 
             save_object(
                 file_path=self.model_trainer_config.trained_model_file_path,
